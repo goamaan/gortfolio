@@ -1,0 +1,33 @@
+{{ define "updatePost" }}
+
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header" }}
+
+<body>
+    {{ template "navbar" }}
+    <h1>Update content</h1>
+    <form action="/blog/{{ .Post.ID }}" method="post">
+        <div>
+            <select name="category">
+                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="/">Index</option>
+                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="blog">Blog</option>
+                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="work">Work</option>
+                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="projects">Project</option>
+            </select>
+        </div>
+        <input type="hidden" name="ID" value={{ .Post.ID }}>
+        <div>
+            <input type="text" name="title" id="title" placeholder="Title" value="{{ .Post.Title }}">
+        </div>
+        <textarea name="description" cols="150" rows="30"
+            placeholder="Content in Markdown">{{ .Post.Description }}</textarea>
+        <div>
+            <button type="submit">Update</button>
+        </div>
+    </form>
+</body>
+
+</html>
+
+{{ end }}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 
@@ -52,11 +53,63 @@ func CreatePost(c *fiber.Ctx) error {
 
 	post.Description = string(mdToHTML([]byte(post.Description)))
 
-	if post.Category != "about" && post.Category != "blog" && post.Category != "work" && post.Category != "project" {
+	if post.Category != "/" && post.Category != "blog" && post.Category != "work" && post.Category != "projects" {
 		return errors.New("Invalid category for post")
 	}
 
 	Database.Db.Create(&post)
 
+	return c.Status(200).Redirect(post.Category)
+}
+
+func UpdatePost(c *fiber.Ctx) error {
+	var post Post
+
+	if err := c.BodyParser(&post); err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	post.Description = string(mdToHTML([]byte(post.Description)))
+	if post.Category != "/" && post.Category != "blog" && post.Category != "work" && post.Category != "projects" {
+		return errors.New("Invalid category for post")
+	}
+
+	Database.Db.Save(&post)
+
 	return c.Status(200).JSON(post)
+}
+
+func DeleteAllPosts(c *fiber.Ctx) error {
+	if err := Database.Db.Delete(&Post{}).Error; err != nil {
+		return c.Status(404).JSON(err.Error())
+	}
+	return c.Status(200).Redirect("/")
+}
+
+func DeletePost(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		return c.Status(400).JSON("Please ensure that :id is an integer")
+	}
+
+	if err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	if err = Database.Db.Delete(&Post{}, id).Error; err != nil {
+		return c.Status(404).JSON(err.Error())
+	}
+
+	return c.Status(200).Redirect("/")
+}
+
+func DeleteAllPostsInCategory(c *fiber.Ctx) error {
+	category := c.Params("category")
+
+	if err := Database.Db.Model(&Post{}).Where(fmt.Sprintf("category = %s", category)).Delete(nil).Error; err != nil {
+		return c.Status(404).JSON(err.Error())
+	}
+
+	return c.Status(200).Redirect("/")
 }

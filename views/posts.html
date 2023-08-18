@@ -7,10 +7,14 @@
 <body>
     {{ template "navbar" }}
     <div>
+        <h1>Posts I've written:</h1>
         {{ range .PostList }}
-        <a href="/posts/{{ .ID }}">
-            {{ .Title }}
-        </a>
+        <div>
+            <a href="/blog/{{ .ID }}">
+                {{ .Title }}
+            </a>
+        </div>
+        <br>
         {{ end }}
     </div>
 </body>

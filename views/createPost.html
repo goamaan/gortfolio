@@ -7,13 +7,13 @@
 <body>
     {{ template "navbar" }}
     <h1>Add content</h1>
-    <form action="/createPost" method="post">
+    <form action="/blog" method="post">
         <div>
             <select name="category">
-                <option value="about">About</option>
+                <option value="/">Index</option>
                 <option value="blog">Blog</option>
                 <option value="work">Work</option>
-                <option value="project">Project</option>
+                <option value="projects">Project</option>
             </select>
         </div>
         <div>

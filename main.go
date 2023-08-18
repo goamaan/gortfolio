@@ -20,7 +20,7 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		var Entries []Post
 		var Descriptions []template.HTML
-		Database.Db.Where(&Post{Category: "about"}).Find(&Entries)
+		Database.Db.Where(&Post{Category: "/"}).Find(&Entries)
 		for _, p := range Entries {
 			Descriptions = append(Descriptions, template.HTML(p.Description))
 		}
@@ -53,7 +53,7 @@ func main() {
 		})
 	})
 
-	app.Get("/posts", func(c *fiber.Ctx) error {
+	app.Get("/blog", func(c *fiber.Ctx) error {
 		var Entries []Post
 		Database.Db.Select("ID", "Title").Where(&Post{Category: "blog"}).Find(&Entries)
 
@@ -63,11 +63,20 @@ func main() {
 		})
 	})
 
-	app.Get("/posts/:id", func(c *fiber.Ctx) error {
-		var Entry []Post
+	app.Get("/blog/:id", func(c *fiber.Ctx) error {
+		var Entry Post
 		Database.Db.First(&Entry, c.Params("id"))
 
 		return c.Render("post", fiber.Map{
+			"Post": Entry,
+		})
+	})
+
+	app.Get("/blog/:id/edit", func(c *fiber.Ctx) error {
+		var Entry Post
+		Database.Db.First(&Entry, c.Params("id"))
+
+		return c.Render("updatePost", fiber.Map{
 			"Post": Entry,
 		})
 	})
@@ -76,7 +85,15 @@ func main() {
 		return c.Render("createPost", nil)
 	})
 
-	app.Post("createPost", CreatePost)
+	app.Post("/blog/:id", UpdatePost)
+
+	app.Post("/blog", CreatePost)
+
+	app.Delete("/all", DeleteAllPosts)
+
+	app.Delete("/all/:category", DeleteAllPostsInCategory)
+
+	app.Delete("/all/:id", DeletePost)
 
 	log.Fatal(app.Listen(":3000"))
 }
