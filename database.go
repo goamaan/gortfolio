@@ -73,12 +73,16 @@ func UpdatePost(c *fiber.Ctx) error {
 	}
 
 	Database.Db.Save(&post)
-	redirectUrl := post.Category
+	redirectCategory := post.Category
 	if post.Category == "/" {
-		redirectUrl = ""
+		redirectCategory = ""
 	}
 
-	return c.Status(200).Redirect("/" + redirectUrl + "/" + strconv.FormatUint(uint64(post.ID), 10))
+	if redirectCategory == "blog" {
+		return c.Status(200).Redirect("/" + redirectCategory + "/" + strconv.FormatUint(uint64(post.ID), 10))
+	}
+
+	return c.Status(200).Redirect("/" + redirectCategory)
 }
 
 func DeleteAllPosts(c *fiber.Ctx) error {

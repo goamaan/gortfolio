@@ -9,6 +9,7 @@ import (
 )
 
 type FormattedItem struct {
+	ID          uint
 	Title       string
 	Description template.HTML
 }
@@ -30,6 +31,7 @@ func main() {
 		for _, p := range Entries {
 			items = append(items,
 				FormattedItem{
+					ID:          p.ID,
 					Description: template.HTML(string(mdToHTML([]byte(p.Description)))),
 					Title:       p.Title})
 		}
@@ -45,6 +47,7 @@ func main() {
 		for _, p := range Entries {
 			items = append(items,
 				FormattedItem{
+					ID:          p.ID,
 					Description: template.HTML(string(mdToHTML([]byte(p.Description)))),
 					Title:       p.Title})
 		}
@@ -60,6 +63,7 @@ func main() {
 		for _, p := range Entries {
 			items = append(items,
 				FormattedItem{
+					ID:          p.ID,
 					Description: template.HTML(string(mdToHTML([]byte(p.Description)))),
 					Title:       p.Title})
 		}
@@ -93,7 +97,7 @@ func main() {
 		})
 	})
 
-	app.Get("/blog/:id/edit", func(c *fiber.Ctx) error {
+	app.Get("/post/:id/edit", func(c *fiber.Ctx) error {
 		var Entry Post
 		Database.Db.First(&Entry, c.Params("id"))
 
@@ -106,15 +110,15 @@ func main() {
 		return c.Render("createPost", nil)
 	})
 
-	app.Post("/blog/:id", UpdatePost)
+	app.Post("/post/:id", UpdatePost)
 
-	app.Post("/blog", CreatePost)
+	app.Post("/post", CreatePost)
 
-	app.Delete("/all", DeleteAllPosts)
+	app.Post("/delete/all", DeleteAllPosts)
 
-	app.Delete("/all/:category", DeleteAllPostsInCategory)
+	app.Post("delete/category/:category", DeleteAllPostsInCategory)
 
-	app.Delete("/all/:id", DeletePost)
+	app.Post("delete/post/:id", DeletePost)
 
 	log.Fatal(app.Listen(":3000"))
 }

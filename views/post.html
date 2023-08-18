@@ -8,7 +8,7 @@
     {{ template "navbar" }}
     <div>
         {{ if .Post.ID }}
-        <a href="/blog/{{.Post.ID}}/edit">Edit</a>
+        <a href="/post/{{.Post.ID}}/edit">Edit</a>
         <h1>{{ .Post.Title}}</h1>
         <div>
             {{ .Description }}
