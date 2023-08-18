@@ -6,6 +6,9 @@
 
 <body>
     {{ template "navbar" }}
+    <form action="/delete/category/about" method="post">
+        <button type="submit">Delete all Index posts</button>
+    </form>
     <div>
         {{ range .Items }}
         <h2>{{ .Title }}</h2>

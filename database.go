@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -86,7 +85,7 @@ func UpdatePost(c *fiber.Ctx) error {
 }
 
 func DeleteAllPosts(c *fiber.Ctx) error {
-	if err := Database.Db.Delete(&Post{}).Error; err != nil {
+	if err := Database.Db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&Post{}).Where(nil).Error; err != nil {
 		return c.Status(404).JSON(err.Error())
 	}
 	return c.Status(200).Redirect("/")
@@ -113,7 +112,11 @@ func DeletePost(c *fiber.Ctx) error {
 func DeleteAllPostsInCategory(c *fiber.Ctx) error {
 	category := c.Params("category")
 
-	if err := Database.Db.Model(&Post{}).Where(fmt.Sprintf("category = %s", category)).Delete(nil).Error; err != nil {
+	if category == "about" {
+		category = "/"
+	}
+
+	if err := Database.Db.Model(&Post{}).Where("category = ?", category).Delete(nil).Error; err != nil {
 		return c.Status(404).JSON(err.Error())
 	}
 

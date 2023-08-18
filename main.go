@@ -116,9 +116,9 @@ func main() {
 
 	app.Post("/delete/all", DeleteAllPosts)
 
-	app.Post("delete/category/:category", DeleteAllPostsInCategory)
+	app.Post("/delete/category/:category", DeleteAllPostsInCategory)
 
-	app.Post("delete/post/:id", DeletePost)
+	app.Post("/delete/post/:id", DeletePost)
 
 	log.Fatal(app.Listen(":3000"))
 }

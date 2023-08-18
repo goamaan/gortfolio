@@ -6,6 +6,9 @@
 
 <body>
     {{ template "navbar" }}
+    <form action="/delete/category/blog" method="post">
+        <button type="submit">Delete all blog posts</button>
+    </form>
     <div>
         <h1>Posts I've written:</h1>
         {{ range .PostList }}
