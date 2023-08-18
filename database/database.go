@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/goamaan/gortfolio/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -27,7 +28,7 @@ func ConnectDb() {
 	db.Logger = logger.Default.LogMode(logger.Info)
 	log.Println("Running Migrations")
 
-	// db.AutoMigrate(&models.User{}, &models.Product{}, &models.Order{})
+	db.AutoMigrate(&models.User{}, &models.ProjectEntry{}, &models.WorkEntry{}, &models.Post{})
 
 	Database = DbInstance{
 		Db: db,
