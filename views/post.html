@@ -1,0 +1,24 @@
+{{ define "post" }}
+
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header" }}
+
+<body>
+    {{ template "navbar" }}
+    <div>
+        {{ if .Post.ID }}
+        <a href="/blog/{{.Post.ID}}/edit">Edit</a>
+        <h1>{{ .Post.Title}}</h1>
+        <div>
+            {{ .Description }}
+        </div>
+        {{ else }}
+        <h3>i have not written anything about this topic yet</h3>
+        {{ end }}
+    </div>
+</body>
+
+</html>
+
+{{ end }}

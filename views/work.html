@@ -7,11 +7,13 @@
 <body>
     {{ template "navbar" }}
     <div>
-        <h1>Work Experience:</h1>
-        {{ range .Entries }}
+        <h1>Work:</h1>
+        {{ range .Items }}
+        <h2>{{ .Title }}</h2>
         <div>
-            {{ . }}
+            {{ .Description }}
         </div>
+        <hr>
         {{ end }}
     </div>
 </body>

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/driver/sqlite"
@@ -51,8 +52,6 @@ func CreatePost(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 
-	post.Description = string(mdToHTML([]byte(post.Description)))
-
 	if post.Category != "/" && post.Category != "blog" && post.Category != "work" && post.Category != "projects" {
 		return errors.New("Invalid category for post")
 	}
@@ -69,14 +68,17 @@ func UpdatePost(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 
-	post.Description = string(mdToHTML([]byte(post.Description)))
 	if post.Category != "/" && post.Category != "blog" && post.Category != "work" && post.Category != "projects" {
 		return errors.New("Invalid category for post")
 	}
 
 	Database.Db.Save(&post)
+	redirectUrl := post.Category
+	if post.Category == "/" {
+		redirectUrl = ""
+	}
 
-	return c.Status(200).JSON(post)
+	return c.Status(200).Redirect("/" + redirectUrl + "/" + strconv.FormatUint(uint64(post.ID), 10))
 }
 
 func DeleteAllPosts(c *fiber.Ctx) error {

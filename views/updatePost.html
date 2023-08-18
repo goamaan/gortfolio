@@ -8,12 +8,15 @@
     {{ template "navbar" }}
     <h1>Update content</h1>
     <form action="/blog/{{ .Post.ID }}" method="post">
+        <a href="/blog/{{.Post.ID}}">Back</a>
+        <br>
+        <hr>
         <div>
             <select name="category">
-                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="/">Index</option>
-                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="blog">Blog</option>
-                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="work">Work</option>
-                <option {{ if eq .Post.Category "/" }} {{ "selected" }} {{ end }} value="projects">Project</option>
+                <option {{ if eq .Post.Category "/" }} selected {{ end }} value="/">Index</option>
+                <option {{ if eq .Post.Category "blog" }} selected {{ end }} value="blog">Blog</option>
+                <option {{ if eq .Post.Category "work" }} selected {{ end }} value="work">Work</option>
+                <option {{ if eq .Post.Category "projects" }} selected {{ end }} value="projects">Project</option>
             </select>
         </div>
         <input type="hidden" name="ID" value={{ .Post.ID }}>

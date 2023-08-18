@@ -1,13 +1,19 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 )
+
+type FormattedItem struct {
+	Title       string
+	Description template.HTML
+}
+
+type Items []FormattedItem
 
 func main() {
 	engine := html.New("./views", ".html")
@@ -19,37 +25,46 @@ func main() {
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		var Entries []Post
-		var Descriptions []template.HTML
+		var items Items
 		Database.Db.Where(&Post{Category: "/"}).Find(&Entries)
 		for _, p := range Entries {
-			Descriptions = append(Descriptions, template.HTML(p.Description))
+			items = append(items,
+				FormattedItem{
+					Description: template.HTML(string(mdToHTML([]byte(p.Description)))),
+					Title:       p.Title})
 		}
 		return c.Render("index", fiber.Map{
-			"Entries": Descriptions,
+			"Items": items,
 		})
 	})
 
 	app.Get("/work", func(c *fiber.Ctx) error {
 		var Entries []Post
-		var Descriptions []template.HTML
+		var items Items
 		Database.Db.Where(&Post{Category: "work"}).Find(&Entries)
 		for _, p := range Entries {
-			Descriptions = append(Descriptions, template.HTML(p.Description))
+			items = append(items,
+				FormattedItem{
+					Description: template.HTML(string(mdToHTML([]byte(p.Description)))),
+					Title:       p.Title})
 		}
 		return c.Render("work", fiber.Map{
-			"Entries": Descriptions,
+			"Items": items,
 		})
 	})
 
 	app.Get("/projects", func(c *fiber.Ctx) error {
 		var Entries []Post
-		var Descriptions []template.HTML
-		Database.Db.Where(&Post{Category: "project"}).Find(&Entries)
+		var items Items
+		Database.Db.Where(&Post{Category: "projects"}).Find(&Entries)
 		for _, p := range Entries {
-			Descriptions = append(Descriptions, template.HTML(p.Description))
+			items = append(items,
+				FormattedItem{
+					Description: template.HTML(string(mdToHTML([]byte(p.Description)))),
+					Title:       p.Title})
 		}
 		return c.Render("projects", fiber.Map{
-			"Entries": Descriptions,
+			"Items": items,
 		})
 	})
 
@@ -57,7 +72,6 @@ func main() {
 		var Entries []Post
 		Database.Db.Select("ID", "Title").Where(&Post{Category: "blog"}).Find(&Entries)
 
-		fmt.Println("entries: ", Entries)
 		return c.Render("posts", fiber.Map{
 			"PostList": Entries,
 		})
@@ -65,10 +79,17 @@ func main() {
 
 	app.Get("/blog/:id", func(c *fiber.Ctx) error {
 		var Entry Post
-		Database.Db.First(&Entry, c.Params("id"))
+		id, err := c.ParamsInt("id")
+		if err != nil {
+			return c.Status(400).JSON("Please ensure that :id is an integer")
+		}
 
+		Database.Db.First(&Entry, id)
+
+		Entry.Description = string(mdToHTML([]byte(Entry.Description)))
 		return c.Render("post", fiber.Map{
-			"Post": Entry,
+			"Post":        Entry,
+			"Description": template.HTML(Entry.Description),
 		})
 	})
 
