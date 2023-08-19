@@ -139,5 +139,10 @@ func main() {
 
 	app.Post("/admin/delete/post/:id", DeletePost)
 
-	log.Fatal(app.Listen(":3000"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Fatal(app.Listen(":" + port))
 }
