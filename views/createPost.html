@@ -1,31 +1,18 @@
-{{ define "createPost" }}
-
-<!DOCTYPE html>
-<html lang="en">
-{{ template "header" }}
-
-<body>
-    {{ template "navbar" }}
-    <h1>Add content</h1>
-    <form action="/post" method="post">
-        <div>
-            <select name="category">
-                <option value="/">Index</option>
-                <option value="blog">Blog</option>
-                <option value="work">Work</option>
-                <option value="projects">Project</option>
-            </select>
-        </div>
-        <div>
-            <input type="text" name="title" id="title" placeholder="Title">
-        </div>
-        <textarea name="description" cols="150" rows="30" placeholder="Content in Markdown"></textarea>
-        <div>
-            <button type="submit">Create</button>
-        </div>
-    </form>
-</body>
-
-</html>
-
-{{ end }}
+<h1>Add content</h1>
+<form action="/admin/post" method="post">
+    <div>
+        <select name="category">
+            <option value="/">Index</option>
+            <option value="blog">Blog</option>
+            <option value="work">Work</option>
+            <option value="projects">Project</option>
+        </select>
+    </div>
+    <div>
+        <input type="text" name="title" id="title" placeholder="Title">
+    </div>
+    <textarea name="description" cols="150" rows="30" placeholder="Content in Markdown"></textarea>
+    <div>
+        <button type="submit">Create</button>
+    </div>
+</form>

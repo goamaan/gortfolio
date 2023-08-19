@@ -1,27 +1,19 @@
-{{ define "work" }}
-
-<!DOCTYPE html>
-<html lang="en">
-{{ template "header" }}
-
-<body>
-    {{ template "navbar" }}
-    <form action="/delete/category/work" method="post">
-        <button type="submit">Delete all work posts</button>
-    </form>
-    <div>
-        <h1>Work:</h1>
-        {{ range .Items }}
-        <h2>{{ .Title }}</h2>
-        <div>
-            {{ .Description }}
-        </div>
-        <a href="/post/{{.ID}}/edit">Edit</a>
-        <hr>
-        {{ end }}
-    </div>
-</body>
-
-</html>
-
+{{ if .admin }}
+<form action="/admin/delete/category/work" method="post">
+    <button type="submit">Delete all work posts</button>
+</form>
 {{ end }}
+{{ $admin := .admin }}
+<div>
+    <h1>Work:</h1>
+    {{ range .Items }}
+    <h2>{{ .Title }}</h2>
+    <div>
+        {{ unescape .Description }}
+    </div>
+    {{ if $admin }}
+    <a href="/admin/post/{{.ID}}/edit">Edit</a>
+    {{ end }}
+    <hr>
+    {{ end }}
+</div>

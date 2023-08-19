@@ -1,5 +1,5 @@
-{{ define "header" }}
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -26,4 +26,9 @@
     </style>
 </head>
 
-{{end}}
+<body>
+    {{ template "views/partials/navbar" . }}
+    {{embed}}
+</body>
+
+</html>

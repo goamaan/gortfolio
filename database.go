@@ -57,7 +57,17 @@ func CreatePost(c *fiber.Ctx) error {
 
 	Database.Db.Create(&post)
 
-	return c.Status(200).Redirect(post.Category)
+	redirectCategory := post.Category
+
+	if post.Category == "/" {
+		redirectCategory = ""
+	}
+
+	if redirectCategory == "blog" {
+		return c.Status(200).Redirect("/" + redirectCategory + "/" + strconv.FormatUint(uint64(post.ID), 10))
+	}
+
+	return c.Status(200).Redirect("/" + redirectCategory)
 }
 
 func UpdatePost(c *fiber.Ctx) error {

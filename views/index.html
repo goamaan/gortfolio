@@ -1,26 +1,18 @@
-{{ define "index" }}
-
-<!DOCTYPE html>
-<html lang="en">
-{{ template "header" }}
-
-<body>
-    {{ template "navbar" }}
-    <form action="/delete/category/about" method="post">
-        <button type="submit">Delete all Index posts</button>
-    </form>
-    <div>
-        {{ range .Items }}
-        <h2>{{ .Title }}</h2>
-        <div>
-            {{ .Description }}
-        </div>
-        <a href="/post/{{.ID}}/edit">Edit</a>
-        <hr>
-        {{ end }}
-    </div>
-</body>
-
-</html>
-
+{{ if .admin }}
+<form action="/admin/delete/category/about" method="post">
+    <button type="submit">Delete all Index posts</button>
+</form>
 {{ end }}
+{{ $admin := .admin}}
+<div>
+    {{ range .Items }}
+    <h2>{{ .Title }}</h2>
+    <div>
+        {{ unescape .Description }}
+    </div>
+    {{ if $admin }}
+    <a href="/admin/post/{{.ID}}/edit">Edit</a>
+    {{ end }}
+    <hr>
+    {{ end }}
+</div>

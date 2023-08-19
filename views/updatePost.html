@@ -1,42 +1,29 @@
-{{ define "updatePost" }}
-
-<!DOCTYPE html>
-<html lang="en">
-{{ template "header" }}
-
-<body>
-    {{ template "navbar" }}
-    <h1>Update content</h1>
+<h1>Update content</h1>
+<div>
+    <a href="/">Back</a>
+</div>
+<br>
+<hr>
+<form action="/admin/delete/post/{{ .Post.ID }}" method="post">
+    <button type="submit">Delete this Post</button>
+</form>
+<br>
+<form action="/admin/post/{{ .Post.ID }}" method="post">
     <div>
-        <a href="/">Back</a>
+        <select name="category">
+            <option {{ if eq .Post.Category "/" }} selected {{ end }} value="/">Index</option>
+            <option {{ if eq .Post.Category "blog" }} selected {{ end }} value="blog">Blog</option>
+            <option {{ if eq .Post.Category "work" }} selected {{ end }} value="work">Work</option>
+            <option {{ if eq .Post.Category "projects" }} selected {{ end }} value="projects">Project</option>
+        </select>
     </div>
-    <br>
-    <hr>
-    <form action="/delete/post/{{ .Post.ID }}" method="post">
-        <button type="submit">Delete this Post</button>
-    </form>
-    <br>
-    <form action="/post/{{ .Post.ID }}" method="post">
-        <div>
-            <select name="category">
-                <option {{ if eq .Post.Category "/" }} selected {{ end }} value="/">Index</option>
-                <option {{ if eq .Post.Category "blog" }} selected {{ end }} value="blog">Blog</option>
-                <option {{ if eq .Post.Category "work" }} selected {{ end }} value="work">Work</option>
-                <option {{ if eq .Post.Category "projects" }} selected {{ end }} value="projects">Project</option>
-            </select>
-        </div>
-        <input type="hidden" name="ID" value={{ .Post.ID }}>
-        <div>
-            <input type="text" name="title" id="title" placeholder="Title" value="{{ .Post.Title }}">
-        </div>
-        <textarea name="description" cols="150" rows="30"
-            placeholder="Content in Markdown">{{ .Post.Description }}</textarea>
-        <div>
-            <button type="submit">Update</button>
-        </div>
-    </form>
-</body>
-
-</html>
-
-{{ end }}
+    <input type="hidden" name="ID" value={{ .Post.ID }}>
+    <div>
+        <input type="text" name="title" id="title" placeholder="Title" value="{{ .Post.Title }}">
+    </div>
+    <textarea name="description" cols="150" rows="30"
+        placeholder="Content in Markdown">{{ unescape .Post.Description }}</textarea>
+    <div>
+        <button type="submit">Update</button>
+    </div>
+</form>

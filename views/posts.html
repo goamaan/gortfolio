@@ -1,27 +1,16 @@
-{{ define "posts" }}
-
-<!DOCTYPE html>
-<html lang="en">
-{{ template "header" }}
-
-<body>
-    {{ template "navbar" }}
-    <form action="/delete/category/blog" method="post">
-        <button type="submit">Delete all blog posts</button>
-    </form>
-    <div>
-        <h1>Posts I've written:</h1>
-        {{ range .PostList }}
-        <div>
-            <a href="/blog/{{ .ID }}">
-                {{ .Title }}
-            </a>
-        </div>
-        <br>
-        {{ end }}
-    </div>
-</body>
-
-</html>
-
+{{ if .admin }}
+<form action="/admin/delete/category/blog" method="post">
+    <button type="submit">Delete all blog posts</button>
+</form>
 {{ end }}
+<div>
+    <h1>Posts I've written:</h1>
+    {{ range .PostList }}
+    <div>
+        <a href="/blog/{{ .ID }}">
+            {{ .Title }}
+        </a>
+    </div>
+    <br>
+    {{ end }}
+</div>
