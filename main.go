@@ -59,7 +59,7 @@ func main() {
 	app.Get("/", func(c *fiber.Ctx) error {
 		var Entries []Post
 
-		Database.Db.Where(&Post{Category: "/"}).Find(&Entries)
+		Database.Db.Where(&Post{Category: "/"}).Order("priority asc").Find(&Entries)
 
 		return c.Render("views/index", fiber.Map{
 			"Items": Entries,
@@ -69,7 +69,7 @@ func main() {
 	app.Get("/work", func(c *fiber.Ctx) error {
 		var Entries []Post
 
-		Database.Db.Where(&Post{Category: "work"}).Find(&Entries)
+		Database.Db.Where(&Post{Category: "work"}).Order("priority asc").Find(&Entries)
 
 		return c.Render("views/work", fiber.Map{
 			"Items": Entries,
@@ -79,7 +79,7 @@ func main() {
 	app.Get("/projects", func(c *fiber.Ctx) error {
 		var Entries []Post
 
-		Database.Db.Where(&Post{Category: "projects"}).Find(&Entries)
+		Database.Db.Where(&Post{Category: "projects"}).Order("priority asc").Find(&Entries)
 
 		return c.Render("views/projects", fiber.Map{
 			"Items": Entries,
@@ -88,7 +88,7 @@ func main() {
 
 	app.Get("/blog", func(c *fiber.Ctx) error {
 		var Entries []Post
-		Database.Db.Select("ID", "Title").Where(&Post{Category: "blog"}).Find(&Entries)
+		Database.Db.Select("ID", "Title").Where(&Post{Category: "blog"}).Order("priority asc").Find(&Entries)
 
 		return c.Render("views/posts", fiber.Map{
 			"PostList": Entries,

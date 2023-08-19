@@ -17,6 +17,9 @@
             <option {{ if eq .Post.Category "projects" }} selected {{ end }} value="projects">Project</option>
         </select>
     </div>
+    <div>
+        <input type="number" name="priority" id="priority" value={{ .Post.Priority }} placeholder="Priority">
+    </div>
     <input type="hidden" name="ID" value={{ .Post.ID }}>
     <div>
         <input type="text" name="title" id="title" placeholder="Title" value="{{ .Post.Title }}">

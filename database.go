@@ -41,6 +41,7 @@ func ConnectDb() {
 type Post struct {
 	gorm.Model
 	Title       string `json:"title"`
+	Priority    int    `json:"priority"`
 	Description string `json:"description"`
 	Category    string `json:"category"`
 }
