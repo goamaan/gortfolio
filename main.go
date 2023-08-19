@@ -10,7 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/encryptcookie"
 	"github.com/gofiber/template/html/v2"
-	"github.com/joho/godotenv"
 )
 
 //go:embed views/*
@@ -25,12 +24,6 @@ func main() {
 	)
 
 	ConnectDb()
-
-	err := godotenv.Load()
-
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	app := fiber.New(fiber.Config{
 		Views:             engine,
