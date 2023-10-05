@@ -122,13 +122,6 @@ func main() {
 		return c.Render("views/createPost", fiber.Map{}, "views/layout")
 	})
 
-	app.Get("/resume", func(c *fiber.Ctx) error {
-		res := c.Response()
-		res.Header.Set("Content-Type", "application/pdf")
-		res.Header.Set("Content-Disposition", "inline; filename=Amaan_Gokak_Resume")
-		return res.SendFile("./public/resume.pdf")
-	})
-
 	app.Post("/admin/post/:id", UpdatePost)
 
 	app.Post("/admin/post", CreatePost)
